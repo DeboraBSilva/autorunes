@@ -1,0 +1,14 @@
+{
+  "main": {
+    "type": "sorcery",
+    "first": "phase_rush",
+    "second": "manaflow_band",
+    "third": "celerity",
+    "fourth": "gathering_storm"
+  },
+  "secondary": {
+    "type": "domination",
+    "first": "eyeball_collection",
+    "second": "relentless_hunter"
+  }
+}
