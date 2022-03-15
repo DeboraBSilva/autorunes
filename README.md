@@ -1,2 +1,2 @@
 # autorunes
- Automatic builds rune page
+ Automatic builds rune page for League of Leagends
