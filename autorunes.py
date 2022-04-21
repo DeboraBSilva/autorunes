@@ -1,3 +1,4 @@
+from gettext import find
 import pyautogui
 import keyboard
 import json
@@ -18,6 +19,13 @@ def savePage():
     pyautogui.click(pyautogui.locateOnScreen('./images/save.png', confidence = CONFIDENCE))
 
 
+def clickLocation(path):
+    # locale = None
+    # while locale == None:
+    locale = pyautogui.locateOnScreen(path, confidence = CONFIDENCE, grayscale = True)    
+    if locale != None:
+        pyautogui.click(locale)
+
 def selectRune(champion):
     f = open('{}.json'.format(champion))
     data = json.load(f)
@@ -30,24 +38,19 @@ def selectRune(champion):
         mainFourth = data['main']['fourth']
         # locale = pyautogui.locateOnScreen('./images/empty_icon.PNG', confidence = CONFIDENCE)
         print('try to click', mainPath + mainType + '_' + mainFirst + '.PNG')
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '_' + mainFirst + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '_' + mainFirst + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '_' + mainSecond + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '_' + mainThird + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
-        locale = pyautogui.locateOnScreen(mainPath + mainType + '_' + mainFourth + '.PNG', confidence = CONFIDENCE)
-        if locale != None:
-            pyautogui.click(locale)
+        time.sleep(3)
+        locale = clickLocation(mainPath + mainType + '_' + mainFirst + '.PNG')
+        print('locale rune', locale)
+        # time.sleep(3)
+        clickLocation(mainPath + mainType + '.PNG')
+        # time.sleep(3)
+        clickLocation(mainPath + mainType + '_' + mainFirst + '.PNG')
+        # time.sleep(3)
+        clickLocation(mainPath + mainType + '_' + mainSecond + '.PNG')
+        # time.sleep(3)
+        clickLocation(mainPath + mainType + '_' + mainThird + '.PNG')
+        # time.sleep(3)
+        clickLocation(mainPath + mainType + '_' + mainFourth + '.PNG')
         return
 
 def chooseChampion():
@@ -57,22 +60,22 @@ def chooseChampion():
 
 def setRune():
     print('You are in the set rune')
-    runes = ['', 'domination', 'inspiration', 'precision', 'resolve', 'sorcery']
+    runesType = ['', 'domination', 'inspiration', 'precision', 'resolve', 'sorcery']
     champion = input('For which champion are setting this rune for? ')
     mainRune = int(input('Select main rune: (1)Domination ; (2)Inspiration ; (3)Precision ; (4)Resolve ; (5)Sorcery '))
     while mainRune != 1 and mainRune != 2 and mainRune != 3 and mainRune != 4 and mainRune != 5:
         mainRune = int(input('Main rune must be one of these: (1)Domination ; (2)Inspiration ; (3)Precision ; (4)Resolve ; (5)Sorcery '))
         
     if(mainRune == 1):
-        selectedMainSpells = selectDomination(True)
+        selectedMainSpells = setDomination(True)
     elif(mainRune == 2):
-        selectedMainSpells = selectInspiration(True)
+        selectedMainSpells = setInspiration(True)
     elif(mainRune == 3):
-        selectedMainSpells = selectPrecision(True)
+        selectedMainSpells = setPrecision(True)
     elif(mainRune == 4):
-        selectedMainSpells = selectResolve(True)
+        selectedMainSpells = setResolve(True)
     elif(mainRune == 5):
-        selectedMainSpells = selectSorcery(True)
+        selectedMainSpells = setSorcery(True)
        
         
     secondaryRune = int(input('Select secondary rune: (1)Domination ; (2)Inspiration ; (3)Precision ; (4)Resolve ; (5)Sorcery'))
@@ -80,15 +83,15 @@ def setRune():
         secondaryRune = int(input('Secondary rune must be one of these: (1)Domination ; (2)Inspiration ; (3)Precision ; (4)Resolve ; (5)Sorcery '))
     
     if(secondaryRune == 1):
-        selectedSecondarySpells = selectDomination(False)
+        selectedSecondarySpells = setDomination(False)
     elif(secondaryRune == 2):
-        selectedSecondarySpells = selectInspiration(False)
+        selectedSecondarySpells = setInspiration(False)
     elif(secondaryRune == 3):
-        selectedSecondarySpells = selectPrecision(False)
+        selectedSecondarySpells = setPrecision(False)
     elif(secondaryRune == 4):
-        selectedSecondarySpells = selectResolve(False)
+        selectedSecondarySpells = setResolve(False)
     elif(secondaryRune == 5):
-        selectedSecondarySpells = selectSorcery(False)
+        selectedSecondarySpells = setSorcery(False)
     
     runes = {
         'main': selectedMainSpells,
@@ -98,7 +101,7 @@ def setRune():
         json.dump(runes, f)
 
 
-def selectDomination(isMainRune):
+def setDomination(isMainRune):
     if(isMainRune):
         firstSpells = ['', 'electrocute', 'predator', 'dark_harvest', 'hail_of_blades']
         secondSpells = ['', 'cheap_shot', 'taste_of_blood', 'sudden_impact']
@@ -127,16 +130,16 @@ def selectDomination(isMainRune):
         }
         return selectedSecondarySpells
 
-def selectInspiration():
+def setInspiration():
     print('Selected 2')
 
-def selectPrecision():
+def setPrecision():
     print('Selected 3')
     
-def selectResolve():
+def setResolve():
     print('Selected 4')
     
-def selectSorcery(isMainRune):
+def setSorcery(isMainRune):
     if(isMainRune):
         firstSpells = ['', 'summon_aery', 'arcane_Comet', 'phase_rush']
         secondSpells = ['', 'nullifying_orb', 'manaflow_band', 'nimbus_cloak']
